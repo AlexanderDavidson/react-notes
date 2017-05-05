@@ -2,7 +2,7 @@ const { createStore, combineReducers } = require('redux')
 
 var initialNotes = [
   {
-    date: 'February 2, 1789',
+    date: 'February 2, 1789',  //228 y dif
     text: 'W. Winds light, W by WSW. Seas 2-4 feet. Am much vexed on account of Mr. Christian. His mood-compass vacillates sharply between Hysterical Agitation and Sullen Lethargy. I had so wanted this Voyage to be special for him...'
   },
   {
@@ -20,10 +20,30 @@ var initialNotes = [
 ]
 
 const notes = (state = initialNotes, action) => {
-  return state
+  switch (action.type) {
+    case 'NOTE_CREATED':
+      return state.concat(action.note)
+    default:
+      return state
+  }
 }
 
-const reducer = combineReducers({ notes })
+const noteInput = (state = '', action) => {
+  switch (action.type) {
+    case 'INPUT_CHANGED':
+      return action.text
+
+    case 'NOTE_CREATED':
+      return ''
+
+    default:
+      return state
+  }
+}
+
+
+
+const reducer = combineReducers({ notes, noteInput })
 const store = createStore(reducer)
 
 module.exports = store
